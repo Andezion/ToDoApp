@@ -1,0 +1,41 @@
+<!-- Файл: app/src/main/res/menu/menu_main.xml -->
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Поиск -->
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search"
+        android:title="Поиск"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+
+    <!-- Фильтр -->
+    <item
+        android:id="@+id/action_filter"
+        android:icon="@drawable/ic_filter"
+        android:title="Фильтр"
+        app:showAsAction="ifRoom" />
+
+    <!-- Сортировка -->
+    <item
+        android:id="@+id/action_sort"
+        android:icon="@drawable/ic_sort"
+        android:title="Сортировка"
+        app:showAsAction="never" />
+
+    <!-- Настройки -->
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="Настройки"
+        app:showAsAction="never" />
+
+    <!-- Статистика -->
+    <item
+        android:id="@+id/action_statistics"
+        android:title="Статистика"
+        app:showAsAction="never" />
+
+</menu>

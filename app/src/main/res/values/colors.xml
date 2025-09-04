@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="primary">#6750A4</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="primary_container">#EADDFF</color>
+    <color name="on_primary_container">#21005D</color>
+
+    <color name="secondary">#625B71</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="secondary_container">#E8DEF8</color>
+    <color name="on_secondary_container">#1D192B</color>
+
+    <color name="tertiary">#7D5260</color>
+    <color name="on_tertiary">#FFFFFF</color>
+    <color name="tertiary_container">#FFD8E4</color>
+    <color name="on_tertiary_container">#31111D</color>
+
+    <color name="error">#B3261E</color>
+    <color name="on_error">#FFFFFF</color>
+    <color name="error_container">#F9DEDC</color>
+    <color name="on_error_container">#410E0B</color>
+
+    <color name="outline">#79747E</color>
+    <color name="background">#FFFBFE</color>
+    <color name="on_background">#1C1B1F</color>
+    <color name="surface">#FFFBFE</color>
+    <color name="on_surface">#1C1B1F</color>
+    <color name="surface_variant">#E7E0EC</color>
+    <color name="on_surface_variant">#49454F</color>
+
+    <!-- Цвета состояния -->
+    <color name="warning">#FF9800</color>
+    <color name="on_warning">#FFFFFF</color>
+    <color name="success">#4CAF50</color>
+    <color name="on_success">#FFFFFF</color>
+
+    <!-- Цвета категорий -->
+    <color name="category_work">#2196F3</color>        <!-- Синий -->
+    <color name="category_personal">#4CAF50</color>     <!-- Зеленый -->
+    <color name="category_study">#FF9800</color>        <!-- Оранжевый -->
+    <color name="category_shopping">#9C27B0</color>     <!-- Фиолетовый -->
+    <color name="category_health">#F44336</color>       <!-- Красный -->
+    <color name="category_finance">#009688</color>      <!-- Бирюзовый -->
+    <color name="category_hobby">#795548</color>        <!-- Коричневый -->
+    <color name="category_travel">#607D8B</color>       <!-- Серо-синий -->
+    <color name="category_default">#757575</color>      <!-- Серый по умолчанию -->
+
+    <!-- Приоритеты -->
+    <color name="priority_high">#F44336</color>         <!-- Высокий - красный -->
+    <color name="priority_medium">#FF9800</color>       <!-- Средний - оранжевый -->
+    <color name="priority_low">#4CAF50</color>          <!-- Низкий - зеленый -->
+
+    <!-- Дополнительные цвета -->
+    <color name="divider">#E0E0E0</color>
+    <color name="shadow">#40000000</color>
+
+    <!-- Темная тема -->
+    <color name="primary_dark">#D0BCFF</color>
+    <color name="on_primary_dark">#381E72</color>
+    <color name="background_dark">#1C1B1F</color>
+    <color name="on_background_dark">#E6E1E5</color>
+    <color name="surface_dark">#1C1B1F</color>
+    <color name="on_surface_dark">#E6E1E5</color>
+</resources>
