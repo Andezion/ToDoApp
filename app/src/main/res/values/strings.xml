@@ -1,14 +1,11 @@
 <resources>
-    <!-- Название приложения -->
-    <string name="app_name">Todo App</string>
+    <string name="app_name">Lab3</string>
 
-    <!-- Основные экраны -->
     <string name="title_main">Мои задачи</string>
     <string name="title_add_task">Новая задача</string>
     <string name="title_edit_task">Редактировать задачу</string>
     <string name="title_settings">Настройки</string>
 
-    <!-- Поля задач -->
     <string name="hint_task_title">Название задачи</string>
     <string name="hint_task_description">Описание (необязательно)</string>
     <string name="hint_category">Категория</string>
@@ -17,7 +14,6 @@
     <string name="label_notifications">Уведомления</string>
     <string name="label_attachments">Вложения</string>
 
-    <!-- Кнопки -->
     <string name="btn_save">Сохранить</string>
     <string name="btn_delete">Удалить</string>
     <string name="btn_cancel">Отмена</string>
@@ -28,14 +24,12 @@
     <string name="btn_set_time">Выбрать время</string>
     <string name="btn_add_attachment">Добавить вложение</string>
 
-    <!-- Меню -->
     <string name="menu_search">Поиск</string>
     <string name="menu_filter">Фильтр</string>
     <string name="menu_sort">Сортировка</string>
     <string name="menu_settings">Настройки</string>
     <string name="menu_statistics">Статистика</string>
 
-    <!-- Категории -->
     <string name="category_general">Общие</string>
     <string name="category_work">Работа</string>
     <string name="category_personal">Личное</string>
@@ -46,14 +40,12 @@
     <string name="category_hobby">Хобби</string>
     <string name="category_travel">Путешествия</string>
 
-    <!-- Время уведомлений -->
     <string name="notification_5min">5 минут</string>
     <string name="notification_15min">15 минут</string>
     <string name="notification_30min">30 минут</string>
     <string name="notification_1hour">1 час</string>
     <string name="notification_1day">1 день</string>
 
-    <!-- Сообщения -->
     <string name="msg_task_created">Задача создана</string>
     <string name="msg_task_updated">Задача обновлена</string>
     <string name="msg_task_deleted">Задача удалена</string>
@@ -61,12 +53,10 @@
     <string name="msg_task_uncompleted">Задача помечена как невыполненная</string>
     <string name="msg_task_duplicated">Задача дублирована</string>
 
-    <!-- Ошибки -->
     <string name="error_title_required">Введите название задачи</string>
     <string name="error_category_required">Выберите категорию</string>
     <string name="error_date_required">Выберите дату выполнения</string>
 
-    <!-- Диалоги -->
     <string name="dialog_delete_task_title">Удалить задачу</string>
     <string name="dialog_delete_task_message">Вы уверены, что хотите удалить задачу \"%1$s\"?</string>
     <string name="dialog_unsaved_changes_title">Несохраненные изменения</string>
@@ -74,18 +64,15 @@
     <string name="dialog_save">Сохранить</string>
     <string name="dialog_dont_save">Не сохранять</string>
 
-    <!-- Пустое состояние -->
     <string name="empty_tasks_title">Нет задач</string>
     <string name="empty_tasks_message">Нажмите кнопку + чтобы\nсоздать первую задачу</string>
 
-    <!-- Относительное время -->
     <string name="time_today">Сегодня</string>
     <string name="time_tomorrow">Завтра</string>
     <string name="time_yesterday">Вчера</string>
     <string name="time_overdue">Просрочено</string>
     <string name="time_now">Сейчас</string>
 
-    <!-- Настройки -->
     <string name="settings_display">Отображение</string>
     <string name="settings_notifications">Уведомления</string>
     <string name="settings_tasks">Задачи</string>
@@ -102,20 +89,17 @@
     <string name="pref_reset">Сбросить настройки</string>
     <string name="pref_about">О приложении</string>
 
-    <!-- Уведомления -->
     <string name="notification_channel_name">Напоминания о задачах</string>
     <string name="notification_channel_description">Уведомления о предстоящих задачах</string>
     <string name="notification_title">Напоминание: %1$s</string>
     <string name="notification_action_complete">Выполнено</string>
     <string name="notification_action_snooze">Отложить</string>
 
-    <!-- Права доступа -->
     <string name="permission_notification_title">Разрешение на уведомления</string>
     <string name="permission_notification_message">Для напоминаний о задачах рекомендуется включить уведомления в настройках приложения.</string>
     <string name="permission_camera">Разрешение на камеру</string>
     <string name="permission_storage">Разрешение на файлы</string>
 
-    <!-- Описания для accessibility -->
     <string name="cd_add_task">Добавить задачу</string>
     <string name="cd_task_completed">Задача выполнена</string>
     <string name="cd_task_has_attachment">Есть вложения</string>

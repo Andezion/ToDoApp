@@ -36,33 +36,28 @@
     <color name="surface_variant">#E7E0EC</color>
     <color name="on_surface_variant">#49454F</color>
 
-    <!-- Цвета состояния -->
     <color name="warning">#FF9800</color>
     <color name="on_warning">#FFFFFF</color>
     <color name="success">#4CAF50</color>
     <color name="on_success">#FFFFFF</color>
 
-    <!-- Цвета категорий -->
-    <color name="category_work">#2196F3</color>        <!-- Синий -->
-    <color name="category_personal">#4CAF50</color>     <!-- Зеленый -->
-    <color name="category_study">#FF9800</color>        <!-- Оранжевый -->
-    <color name="category_shopping">#9C27B0</color>     <!-- Фиолетовый -->
-    <color name="category_health">#F44336</color>       <!-- Красный -->
-    <color name="category_finance">#009688</color>      <!-- Бирюзовый -->
-    <color name="category_hobby">#795548</color>        <!-- Коричневый -->
-    <color name="category_travel">#607D8B</color>       <!-- Серо-синий -->
-    <color name="category_default">#757575</color>      <!-- Серый по умолчанию -->
+    <color name="category_work">#2196F3</color>
+    <color name="category_personal">#4CAF50</color>
+    <color name="category_study">#FF9800</color>
+    <color name="category_shopping">#9C27B0</color>
+    <color name="category_health">#F44336</color>
+    <color name="category_finance">#009688</color>
+    <color name="category_hobby">#795548</color>
+    <color name="category_travel">#607D8B</color>
+    <color name="category_default">#757575</color>
 
-    <!-- Приоритеты -->
-    <color name="priority_high">#F44336</color>         <!-- Высокий - красный -->
-    <color name="priority_medium">#FF9800</color>       <!-- Средний - оранжевый -->
-    <color name="priority_low">#4CAF50</color>          <!-- Низкий - зеленый -->
+    <color name="priority_high">#F44336</color>
+    <color name="priority_medium">#FF9800</color>
+    <color name="priority_low">#4CAF50</color>
 
-    <!-- Дополнительные цвета -->
     <color name="divider">#E0E0E0</color>
     <color name="shadow">#40000000</color>
 
-    <!-- Темная тема -->
     <color name="primary_dark">#D0BCFF</color>
     <color name="on_primary_dark">#381E72</color>
     <color name="background_dark">#1C1B1F</color>

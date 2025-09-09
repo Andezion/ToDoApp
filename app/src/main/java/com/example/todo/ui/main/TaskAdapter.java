@@ -18,10 +18,6 @@ import com.example.todo.R;
 import com.example.todo.data.database.entities.Task;
 import com.example.todo.utils.DateUtils;
 
-/**
- * Адаптер для отображения списка задач в RecyclerView
- * Путь: app/src/main/java/com/yourpackage/todoapp/ui/main/TaskAdapter.java
- */
 public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
 
     private OnTaskClickListener listener;
@@ -31,7 +27,6 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
         this.listener = listener;
     }
 
-    // DiffUtil для эффективного обновления списка
     private static final DiffUtil.ItemCallback<Task> DIFF_CALLBACK = new DiffUtil.ItemCallback<Task>() {
         @Override
         public boolean areItemsTheSame(@NonNull Task oldItem, @NonNull Task newItem) {
@@ -64,17 +59,16 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
         holder.bind(currentTask);
     }
 
-    // ViewHolder класс
     class TaskViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvTitle;
-        private TextView tvDescription;
-        private TextView tvDueDate;
-        private TextView tvCategory;
-        private CheckBox cbCompleted;
-        private ImageView ivAttachment;
-        private ImageView ivNotification;
-        private ImageView ivPriority;
-        private View vCategoryIndicator;
+        private final TextView tvTitle;
+        private final TextView tvDescription;
+        private final TextView tvDueDate;
+        private final TextView tvCategory;
+        private final CheckBox cbCompleted;
+        private final ImageView ivAttachment;
+        private final ImageView ivNotification;
+        private final ImageView ivPriority;
+        private final View vCategoryIndicator;
 
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -89,7 +83,6 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
             ivPriority = itemView.findViewById(R.id.ivPriority);
             vCategoryIndicator = itemView.findViewById(R.id.vCategoryIndicator);
 
-            // Обработчики кликов
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
@@ -115,10 +108,8 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
         }
 
         public void bind(Task task) {
-            // Основная информация
             tvTitle.setText(task.getTitle());
 
-            // Описание (показывать только если есть)
             if (task.getDescription() != null && !task.getDescription().trim().isEmpty()) {
                 tvDescription.setText(task.getDescription());
                 tvDescription.setVisibility(View.VISIBLE);
@@ -126,12 +117,10 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
                 tvDescription.setVisibility(View.GONE);
             }
 
-            // Дата выполнения
             if (task.getCompletionTime() > 0) {
                 tvDueDate.setText(DateUtils.getRelativeTimeString(task.getCompletionTime()));
                 tvDueDate.setVisibility(View.VISIBLE);
 
-                // Цвет даты в зависимости от срочности
                 if (DateUtils.isOverdue(task.getCompletionTime()) && !task.isCompleted()) {
                     tvDueDate.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.error));
                 } else if (DateUtils.getDaysUntilDue(task.getCompletionTime()) <= 1 && !task.isCompleted()) {
@@ -143,16 +132,12 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
                 tvDueDate.setVisibility(View.GONE);
             }
 
-            // Категория
             tvCategory.setText(task.getCategory());
 
-            // Индикатор категории (цветная полоска)
             setCategoryIndicatorColor(task.getCategory());
 
-            // Checkbox состояния
             cbCompleted.setChecked(task.isCompleted());
 
-            // Стиль для завершенных задач
             if (task.isCompleted()) {
                 tvTitle.setPaintFlags(tvTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 tvDescription.setPaintFlags(tvDescription.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -163,11 +148,9 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
                 itemView.setAlpha(1.0f);
             }
 
-            // Иконки
             ivAttachment.setVisibility(task.isHasAttachments() ? View.VISIBLE : View.GONE);
             ivNotification.setVisibility(task.isNotificationEnabled() ? View.VISIBLE : View.GONE);
 
-            // Приоритет (срочность)
             if (DateUtils.isOverdue(task.getCompletionTime()) && !task.isCompleted()) {
                 ivPriority.setVisibility(View.VISIBLE);
                 ivPriority.setImageResource(R.drawable.ic_priority_high);
@@ -209,7 +192,6 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
         }
     }
 
-    // Интерфейс для обработки кликов
     public interface OnTaskClickListener {
         void onTaskClick(Task task);
         void onTaskLongClick(Task task);

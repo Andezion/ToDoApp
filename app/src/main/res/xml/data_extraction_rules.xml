@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data-extraction-rules>
     <cloud-backup>
-        <!-- Разрешаем резервное копирование в облако -->
+
         <include domain="sharedpref" path="."/>
         <include domain="database" path="todo_database"/>
     </cloud-backup>
     <device-transfer>
-        <!-- Разрешаем перенос данных между устройствами -->
+
         <include domain="sharedpref" path="."/>
         <include domain="database" path="todo_database"/>
-        <!-- Исключаем файлы вложений из автоматического переноса -->
+
         <exclude domain="file"/>
     </device-transfer>
 </data-extraction-rules>

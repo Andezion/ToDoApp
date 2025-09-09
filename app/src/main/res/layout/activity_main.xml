@@ -8,7 +8,6 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.main.MainActivity">
 
-    <!-- AppBar с поиском -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
@@ -24,7 +23,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Основной контент -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -35,7 +33,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- RecyclerView для списка задач -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewTasks"
                 android:layout_width="match_parent"
@@ -45,7 +42,6 @@
                 android:paddingBottom="88dp"
                 tools:listitem="@layout/item_task" />
 
-            <!-- Пустое состояние -->
             <LinearLayout
                 android:id="@+id/emptyStateView"
                 android:layout_width="match_parent"
@@ -87,7 +83,6 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Floating Action Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddTask"
         android:layout_width="wrap_content"
@@ -99,7 +94,6 @@
         app:srcCompat="@drawable/ic_add"
         app:tint="?attr/colorOnPrimary" />
 
-    <!-- Индикатор загрузки (опционально) -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"

@@ -25,14 +25,14 @@ public class SettingsViewModel extends AndroidViewModel {
     public static final String DEFAULT_THEME = "system";
     public static final String DEFAULT_SORT_ORDER = "due_time";
 
-    private SharedPreferences sharedPreferences;
+    private final SharedPreferences sharedPreferences;
 
-    private MutableLiveData<Boolean> hideCompletedTasks = new MutableLiveData<>();
-    private MutableLiveData<Integer> notificationTimeMinutes = new MutableLiveData<>();
-    private MutableLiveData<Set<String>> visibleCategories = new MutableLiveData<>();
-    private MutableLiveData<String> defaultCategory = new MutableLiveData<>();
-    private MutableLiveData<String> themeMode = new MutableLiveData<>();
-    private MutableLiveData<String> sortOrder = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> hideCompletedTasks = new MutableLiveData<>();
+    private final MutableLiveData<Integer> notificationTimeMinutes = new MutableLiveData<>();
+    private final MutableLiveData<Set<String>> visibleCategories = new MutableLiveData<>();
+    private final MutableLiveData<String> defaultCategory = new MutableLiveData<>();
+    private final MutableLiveData<String> themeMode = new MutableLiveData<>();
+    private final MutableLiveData<String> sortOrder = new MutableLiveData<>();
 
     public SettingsViewModel(@NonNull Application application) {
         super(application);

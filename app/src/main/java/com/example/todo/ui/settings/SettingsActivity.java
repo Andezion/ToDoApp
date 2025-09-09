@@ -13,10 +13,6 @@ import androidx.preference.SwitchPreferenceCompat;
 import com.example.todo.R;
 import com.example.todo.viewmodel.SettingsViewModel;
 
-/**
- * Активность настроек приложения
- * Путь: app/src/main/java/com/yourpackage/todoapp/ui/settings/SettingsActivity.java
- */
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
@@ -24,13 +20,11 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        // Настройка ActionBar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Настройки");
         }
 
-        // Загружаем фрагмент с настройками
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -48,9 +42,6 @@ public class SettingsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Фрагмент с настройками приложения
-     */
     public static class SettingsFragment extends PreferenceFragmentCompat {
 
         private SettingsViewModel settingsViewModel;
@@ -59,14 +50,12 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.preferences, rootKey);
 
-            // Инициализируем ViewModel
             settingsViewModel = new ViewModelProvider(requireActivity()).get(SettingsViewModel.class);
 
             setupPreferences();
         }
 
         private void setupPreferences() {
-            // Скрытие завершенных задач
             SwitchPreferenceCompat hideCompletedPref = findPreference(SettingsViewModel.PREF_HIDE_COMPLETED);
             if (hideCompletedPref != null) {
                 hideCompletedPref.setOnPreferenceChangeListener((preference, newValue) -> {
@@ -75,7 +64,6 @@ public class SettingsActivity extends AppCompatActivity {
                 });
             }
 
-            // Время уведомления
             Preference notificationTimePref = findPreference(SettingsViewModel.PREF_NOTIFICATION_TIME);
             if (notificationTimePref != null) {
                 updateNotificationTimeSummary();
@@ -85,7 +73,6 @@ public class SettingsActivity extends AppCompatActivity {
                 });
             }
 
-            // Категория по умолчанию
             Preference defaultCategoryPref = findPreference(SettingsViewModel.PREF_DEFAULT_CATEGORY);
             if (defaultCategoryPref != null) {
                 updateDefaultCategorySummary();
@@ -95,7 +82,6 @@ public class SettingsActivity extends AppCompatActivity {
                 });
             }
 
-            // Тема приложения
             Preference themePref = findPreference(SettingsViewModel.PREF_THEME_MODE);
             if (themePref != null) {
                 updateThemeSummary();
@@ -105,7 +91,6 @@ public class SettingsActivity extends AppCompatActivity {
                 });
             }
 
-            // Сброс настроек
             Preference resetPref = findPreference("reset_settings");
             if (resetPref != null) {
                 resetPref.setOnPreferenceClickListener(preference -> {
@@ -114,7 +99,6 @@ public class SettingsActivity extends AppCompatActivity {
                 });
             }
 
-            // О приложении
             Preference aboutPref = findPreference("about");
             if (aboutPref != null) {
                 aboutPref.setOnPreferenceClickListener(preference -> {
@@ -155,7 +139,7 @@ public class SettingsActivity extends AppCompatActivity {
             int[] values = {5, 15, 30, 60, 120, 24 * 60};
 
             int currentValue = settingsViewModel.getCurrentNotificationTimeMinutes();
-            int selectedIndex = 1; // По умолчанию 15 минут
+            int selectedIndex = 1;
 
             for (int i = 0; i < values.length; i++) {
                 if (values[i] == currentValue) {
@@ -203,7 +187,7 @@ public class SettingsActivity extends AppCompatActivity {
             String[] values = {"light", "dark", "system"};
             String currentTheme = settingsViewModel.getCurrentThemeMode();
 
-            int selectedIndex = 2; // По умолчанию системная
+            int selectedIndex = 2;
             for (int i = 0; i < values.length; i++) {
                 if (values[i].equals(currentTheme)) {
                     selectedIndex = i;
@@ -216,7 +200,6 @@ public class SettingsActivity extends AppCompatActivity {
             builder.setSingleChoiceItems(themes, selectedIndex, (dialog, which) -> {
                 settingsViewModel.setThemeMode(values[which]);
                 updateThemeSummary();
-                // Здесь можно добавить применение темы
                 dialog.dismiss();
             });
             builder.setNegativeButton("Отмена", null);
@@ -229,12 +212,10 @@ public class SettingsActivity extends AppCompatActivity {
             builder.setMessage("Вы уверены, что хотите сбросить все настройки к значениям по умолчанию?");
             builder.setPositiveButton("Сбросить", (dialog, which) -> {
                 settingsViewModel.resetToDefaults();
-                // Обновляем отображение всех настроек
                 updateNotificationTimeSummary();
                 updateDefaultCategorySummary();
                 updateThemeSummary();
 
-                // Обновляем переключатели
                 SwitchPreferenceCompat hideCompletedPref = findPreference(SettingsViewModel.PREF_HIDE_COMPLETED);
                 if (hideCompletedPref != null) {
                     hideCompletedPref.setChecked(false);

@@ -15,21 +15,21 @@ import java.util.List;
 
 public class TaskViewModel extends AndroidViewModel {
 
-    private TaskRepository repository;
+    private final TaskRepository repository;
 
-    private LiveData<List<Task>> allTasks;
-    private LiveData<List<Task>> incompleteTasks;
-    private LiveData<List<Task>> completeTasks;
+    private final LiveData<List<Task>> allTasks;
+    private final LiveData<List<Task>> incompleteTasks;
+    private final LiveData<List<Task>> completeTasks;
 
-    private MutableLiveData<String> searchQuery = new MutableLiveData<>("");
-    private MutableLiveData<String> selectedCategory = new MutableLiveData<>();
-    private MutableLiveData<Boolean> showCompletedTasks = new MutableLiveData<>(true);
+    private final MutableLiveData<String> searchQuery = new MutableLiveData<>("");
+    private final MutableLiveData<String> selectedCategory = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> showCompletedTasks = new MutableLiveData<>(true);
 
-    private LiveData<List<Task>> searchResults;
-    private LiveData<List<Task>> filteredTasks;
+    private final LiveData<List<Task>> searchResults;
+    private final LiveData<List<Task>> filteredTasks;
 
-    private LiveData<List<String>> allCategories;
-    private LiveData<Integer> incompleteTaskCount;
+    private final LiveData<List<String>> allCategories;
+    private final LiveData<Integer> incompleteTaskCount;
 
     public TaskViewModel(@NonNull Application application) {
         super(application);

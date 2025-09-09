@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.settings.SettingsActivity">
 
-    <!-- AppBar -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -20,7 +19,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Контейнер для фрагмента настроек -->
     <FrameLayout
         android:id="@+id/settings_container"
         android:layout_width="match_parent"

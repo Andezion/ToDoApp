@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.task.AddEditTaskActivity">
 
-    <!-- AppBar -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -20,7 +19,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Основное содержимое -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -32,7 +30,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Название задачи -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilTitle"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -51,7 +48,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Описание -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilDescription"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -71,7 +67,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Категория -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilCategory"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -89,7 +84,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Дата и время -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -146,7 +140,6 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Уведомления -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -191,7 +184,6 @@
 
                     </LinearLayout>
 
-                    <!-- Время уведомления -->
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/chipGroupNotificationTime"
                         android:layout_width="match_parent"
@@ -240,7 +232,6 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Вложения -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -274,7 +265,6 @@
                         android:text="Добавить вложение"
                         app:icon="@drawable/ic_add" />
 
-                    <!-- Список вложений (добавится динамически) -->
                     <LinearLayout
                         android:id="@+id/layoutAttachments"
                         android:layout_width="match_parent"

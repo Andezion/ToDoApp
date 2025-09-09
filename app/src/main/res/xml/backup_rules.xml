@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <full-backup-content>
-    <!-- Включаем резервное копирование настроек -->
+
     <include domain="sharedpref" path="."/>
-    <!-- Включаем базу данных -->
+
     <include domain="database" path="todo_database"/>
-    <!-- Исключаем временные файлы -->
+
     <exclude domain="file"/>
 </full-backup-content>

@@ -28,42 +28,29 @@ import com.example.todo.viewmodel.TaskViewModel;
 import com.example.todo.viewmodel.SettingsViewModel;
 
 import java.util.Calendar;
+import java.util.Objects;
 
-/**
- * Активность для создания и редактирования задач
- * Путь: app/src/main/java/com/yourpackage/todoapp/ui/task/AddEditTaskActivity.java
- */
 public class AddEditTaskActivity extends AppCompatActivity {
 
-    // Константы
     public static final String EXTRA_TASK_ID = "task_id";
-    private static final int REQUEST_ATTACHMENTS = 2001;
 
-    // UI компоненты
     private TextInputEditText etTitle;
     private TextInputEditText etDescription;
     private AutoCompleteTextView etCategory;
     private MaterialButton btnSetDate;
     private MaterialButton btnSetTime;
-    private MaterialButton btnAttachments;
     private SwitchMaterial switchNotification;
     private ChipGroup chipGroupNotificationTime;
     private TextInputLayout tilTitle;
-    private TextInputLayout tilDescription;
     private TextInputLayout tilCategory;
-
-    // ViewModels
     private TaskViewModel taskViewModel;
-    private SettingsViewModel settingsViewModel;
 
-    // Данные
     private Task currentTask;
     private boolean isEditMode = false;
     private Calendar selectedDateTime;
     private int selectedNotificationMinutes = 15;
 
-    // Список категорий
-    private String[] categories = {
+    private final String[] categories = {
             "Общие", "Работа", "Личное", "Учеба",
             "Покупки", "Здоровье", "Финансы", "Хобби", "Путешествия"
     };
@@ -79,7 +66,6 @@ public class AddEditTaskActivity extends AppCompatActivity {
         setupDateTime();
         setupNotificationOptions();
 
-        // Проверяем, редактируем ли существующую задачу
         Intent intent = getIntent();
         if (intent.hasExtra(EXTRA_TASK_ID)) {
             int taskId = intent.getIntExtra(EXTRA_TASK_ID, -1);
@@ -93,22 +79,19 @@ public class AddEditTaskActivity extends AppCompatActivity {
         setupActionBar();
     }
 
-    // === ИНИЦИАЛИЗАЦИЯ ===
-
     private void initViews() {
         etTitle = findViewById(R.id.etTitle);
         etDescription = findViewById(R.id.etDescription);
         etCategory = findViewById(R.id.etCategory);
         btnSetDate = findViewById(R.id.btnSetDate);
         btnSetTime = findViewById(R.id.btnSetTime);
-        btnAttachments = findViewById(R.id.btnAttachments);
+        MaterialButton btnAttachments = findViewById(R.id.btnAttachments);
         switchNotification = findViewById(R.id.switchNotification);
         chipGroupNotificationTime = findViewById(R.id.chipGroupNotificationTime);
         tilTitle = findViewById(R.id.tilTitle);
-        tilDescription = findViewById(R.id.tilDescription);
+        TextInputLayout tilDescription = findViewById(R.id.tilDescription);
         tilCategory = findViewById(R.id.tilCategory);
 
-        // Обработчики кликов
         btnSetDate.setOnClickListener(v -> showDatePicker());
         btnSetTime.setOnClickListener(v -> showTimePicker());
         btnAttachments.setOnClickListener(v -> showAttachmentsDialog());
@@ -120,9 +103,8 @@ public class AddEditTaskActivity extends AppCompatActivity {
 
     private void initViewModels() {
         taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
-        settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
+        SettingsViewModel settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
 
-        // Устанавливаем категорию по умолчанию из настроек
         settingsViewModel.getDefaultCategory().observe(this, defaultCategory -> {
             if (defaultCategory != null && !isEditMode) {
                 etCategory.setText(defaultCategory);
@@ -142,14 +124,12 @@ public class AddEditTaskActivity extends AppCompatActivity {
                 android.R.layout.simple_dropdown_item_1line, categories);
         etCategory.setAdapter(adapter);
         etCategory.setOnItemClickListener((parent, view, position, id) -> {
-            // Скрываем клавиатуру при выборе из списка
             etCategory.clearFocus();
         });
     }
 
     private void setupDateTime() {
         selectedDateTime = Calendar.getInstance();
-        // По умолчанию устанавливаем на завтра в 9:00
         selectedDateTime.add(Calendar.DAY_OF_MONTH, 1);
         selectedDateTime.set(Calendar.HOUR_OF_DAY, 9);
         selectedDateTime.set(Calendar.MINUTE, 0);
@@ -160,7 +140,6 @@ public class AddEditTaskActivity extends AppCompatActivity {
     }
 
     private void setupNotificationOptions() {
-        // Настройка ChipGroup для выбора времени уведомления
         chipGroupNotificationTime.setOnCheckedStateChangeListener((group, checkedIds) -> {
             if (!checkedIds.isEmpty()) {
                 int checkedId = checkedIds.get(0);
@@ -178,11 +157,8 @@ public class AddEditTaskActivity extends AppCompatActivity {
             }
         });
 
-        // По умолчанию выбираем 15 минут
         chipGroupNotificationTime.check(R.id.chip15min);
     }
-
-    // === ЗАГРУЗКА И СОХРАНЕНИЕ ДАННЫХ ===
 
     private void loadTask(int taskId) {
         taskViewModel.getTaskById(taskId).observe(this, task -> {
@@ -200,13 +176,11 @@ public class AddEditTaskActivity extends AppCompatActivity {
         etDescription.setText(currentTask.getDescription());
         etCategory.setText(currentTask.getCategory());
 
-        // Дата и время
         if (currentTask.getCompletionTime() > 0) {
             selectedDateTime.setTimeInMillis(currentTask.getCompletionTime());
             updateDateTimeButtons();
         }
 
-        // Уведомления
         switchNotification.setChecked(currentTask.isNotificationEnabled());
         selectedNotificationMinutes = currentTask.getNotificationMinutesBefore();
         selectNotificationChip();
@@ -240,8 +214,6 @@ public class AddEditTaskActivity extends AppCompatActivity {
         chipGroupNotificationTime.check(chipId);
     }
 
-    // === ДИАЛОГИ ===
-
     private void showDatePicker() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
@@ -256,7 +228,6 @@ public class AddEditTaskActivity extends AppCompatActivity {
                 selectedDateTime.get(Calendar.DAY_OF_MONTH)
         );
 
-        // Устанавливаем минимальную дату - сегодня
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
         datePickerDialog.show();
     }
@@ -302,8 +273,6 @@ public class AddEditTaskActivity extends AppCompatActivity {
         builder.show();
     }
 
-    // === РАБОТА С ВЛОЖЕНИЯМИ ===
-
     private void openCamera() {
         // TODO: Реализовать открытие камеры
         Toast.makeText(this, "Функция камеры будет добавлена позже", Toast.LENGTH_SHORT).show();
@@ -328,21 +297,18 @@ public class AddEditTaskActivity extends AppCompatActivity {
         }
     }
 
-    // === ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ ===
-
     private void updateDateTimeButtons() {
         btnSetDate.setText(DateUtils.formatShortDate(selectedDateTime.getTimeInMillis()));
         btnSetTime.setText(DateUtils.formatTime(selectedDateTime.getTimeInMillis()));
     }
 
     private void updateUI() {
-        // Обновляем видимость элементов в зависимости от режима
+
     }
 
     private boolean validateInput() {
         boolean isValid = true;
 
-        // Проверка заголовка
         String title = etTitle.getText().toString().trim();
         if (title.isEmpty()) {
             tilTitle.setError("Введите название задачи");
@@ -351,7 +317,6 @@ public class AddEditTaskActivity extends AppCompatActivity {
             tilTitle.setError(null);
         }
 
-        // Проверка категории
         String category = etCategory.getText().toString().trim();
         if (category.isEmpty()) {
             tilCategory.setError("Выберите категорию");
@@ -363,20 +328,17 @@ public class AddEditTaskActivity extends AppCompatActivity {
         return isValid;
     }
 
-    // === СОХРАНЕНИЕ ===
-
     private void saveTask() {
         if (!validateInput()) {
             return;
         }
 
-        String title = etTitle.getText().toString().trim();
-        String description = etDescription.getText().toString().trim();
+        String title = Objects.requireNonNull(etTitle.getText()).toString().trim();
+        String description = Objects.requireNonNull(etDescription.getText()).toString().trim();
         String category = etCategory.getText().toString().trim();
         boolean notificationEnabled = switchNotification.isChecked();
 
         if (isEditMode && currentTask != null) {
-            // Обновляем существующую задачу
             currentTask.setTitle(title);
             currentTask.setDescription(description);
             currentTask.setCategory(category);
@@ -386,7 +348,6 @@ public class AddEditTaskActivity extends AppCompatActivity {
 
             taskViewModel.updateTask(currentTask);
         } else {
-            // Создаем новую задачу
             Task newTask = new Task();
             newTask.setTitle(title);
             newTask.setDescription(description);
@@ -402,13 +363,11 @@ public class AddEditTaskActivity extends AppCompatActivity {
         finish();
     }
 
-    // === МЕНЮ ===
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_add_edit_task, menu);
 
-        // Показываем пункт удаления только в режиме редактирования
         MenuItem deleteItem = menu.findItem(R.id.action_delete);
         if (deleteItem != null) {
             deleteItem.setVisible(isEditMode);
@@ -422,7 +381,6 @@ public class AddEditTaskActivity extends AppCompatActivity {
         int itemId = item.getItemId();
 
         if (itemId == android.R.id.home) {
-            // Кнопка "Назад" в ActionBar
             onBackPressed();
             return true;
         } else if (itemId == R.id.action_save) {
@@ -455,7 +413,6 @@ public class AddEditTaskActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // Проверяем, есть ли несохраненные изменения
         if (hasUnsavedChanges()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Несохраненные изменения");
@@ -472,7 +429,6 @@ public class AddEditTaskActivity extends AppCompatActivity {
     }
 
     private boolean hasUnsavedChanges() {
-        // Проверяем, изменились ли поля с момента загрузки
         String currentTitle = etTitle.getText().toString().trim();
         String currentDescription = etDescription.getText().toString().trim();
         String currentCategory = etCategory.getText().toString().trim();
