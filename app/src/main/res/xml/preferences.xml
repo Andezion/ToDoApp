@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Категория: Отображение -->
+    <PreferenceCategory
+        android:title="Отображение"
+        app:iconSpaceReserved="false">
+
+        <SwitchPreferenceCompat
+            android:key="hide_completed_tasks"
+            android:title="Скрывать завершенные задачи"
+            android:summary="Не показывать выполненные задачи в списке"
+            android:defaultValue="false"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="theme_mode"
+            android:title="Тема приложения"
+            android:summary="Системная"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+    <!-- Категория: Уведомления -->
+    <PreferenceCategory
+        android:title="Уведомления"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            android:key="notification_time_minutes"
+            android:title="Время уведомления"
+            android:summary="15 минут"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+    <!-- Категория: Задачи -->
+    <PreferenceCategory
+        android:title="Задачи"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            android:key="default_category"
+            android:title="Категория по умолчанию"
+            android:summary="Общие"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="sort_order"
+            android:title="Сортировка задач"
+            android:summary="По времени выполнения"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+    <!-- Категория: Данные -->
+    <PreferenceCategory
+        android:title="Данные"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            android:key="backup_restore"
+            android:title="Резервное копирование"
+            android:summary="Экспорт и импорт данных"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="reset_settings"
+            android:title="Сбросить настройки"
+            android:summary="Вернуть все настройки к значениям по умолчанию"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+    <!-- Категория: Информация -->
+    <PreferenceCategory
+        android:title="Информация"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            android:key="about"
+            android:title="О приложении"
+            android:summary="Информация о версии и разработчике"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="privacy_policy"
+            android:title="Политика конфиденциальности"
+            android:summary="Как мы обрабатываем ваши данные"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

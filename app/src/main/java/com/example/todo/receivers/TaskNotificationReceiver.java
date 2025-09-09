@@ -11,10 +11,25 @@ import com.example.todo.data.database.AppDatabase;
 import com.example.todo.data.database.entities.Task;
 import com.example.todo.utils.NotificationHelper;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class TaskNotificationReceiver extends BroadcastReceiver {
+
+    private void rescheduleNotifications(Context context) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            AppDatabase database = AppDatabase.getInstance(context);
+            long currentTime = System.currentTimeMillis();
+            List<Task> tasks = database.taskDao().getTasksForNotification(currentTime);
+
+            NotificationHelper notificationHelper = new NotificationHelper(context);
+            for (Task task : tasks) {
+                notificationHelper.scheduleTaskNotification(task);
+            }
+        });
+    }
 
     @Override
     public void onReceive(Context context, Intent intent)
@@ -44,6 +59,10 @@ public class TaskNotificationReceiver extends BroadcastReceiver {
                     break;
             }
         }
+    }
+
+    private Task getTaskSync(AppDatabase database, int taskId) {
+        return database.taskDao().getTaskById(taskId).getValue();
     }
 
     private void showTaskNotification(Context context, Intent intent) {
