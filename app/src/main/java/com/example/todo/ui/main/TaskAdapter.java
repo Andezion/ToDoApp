@@ -20,7 +20,7 @@ import com.example.todo.utils.DateUtils;
 
 public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
 
-    private OnTaskClickListener listener;
+    private final OnTaskClickListener listener;
 
     public TaskAdapter(OnTaskClickListener listener) {
         super(DIFF_CALLBACK);
@@ -168,19 +168,19 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
             int color;
 
             switch (category.toLowerCase()) {
-                case "работа":
+                case "work":
                     color = ContextCompat.getColor(itemView.getContext(), R.color.category_work);
                     break;
-                case "личное":
+                case "private":
                     color = ContextCompat.getColor(itemView.getContext(), R.color.category_personal);
                     break;
-                case "учеба":
+                case "studies":
                     color = ContextCompat.getColor(itemView.getContext(), R.color.category_study);
                     break;
-                case "покупки":
+                case "shopping":
                     color = ContextCompat.getColor(itemView.getContext(), R.color.category_shopping);
                     break;
-                case "здоровье":
+                case "health":
                     color = ContextCompat.getColor(itemView.getContext(), R.color.category_health);
                     break;
                 default:

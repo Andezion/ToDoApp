@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         emptyStateView = findViewById(R.id.emptyStateView);
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Мои задачи");
+            getSupportActionBar().setTitle("My tasks");
         }
     }
 
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    if (newText.length() >= 2 || newText.isEmpty()) {
+                    if (newText.length() != 1) {
                         performSearch(newText);
                     }
                     return true;
@@ -134,12 +134,12 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
             searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
                 @Override
-                public boolean onMenuItemActionExpand(MenuItem item) {
+                public boolean onMenuItemActionExpand(@NonNull MenuItem item) {
                     return true;
                 }
 
                 @Override
-                public boolean onMenuItemActionCollapse(MenuItem item) {
+                public boolean onMenuItemActionCollapse(@NonNull MenuItem item) {
                     performSearch("");
                     return true;
                 }
@@ -181,13 +181,13 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         boolean currentShowCompleted = taskViewModel.getCurrentShowCompletedTasks();
         taskViewModel.setShowCompletedTasks(!currentShowCompleted);
 
-        String message = currentShowCompleted ? "Скрыты завершенные задачи" : "Показаны все задачи";
+        String message = currentShowCompleted ? "Completed tasks hidden" : "All tasks shown";
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     private void showSortDialog() {
         // TODO: Реализовать диалог сортировки
-        Toast.makeText(this, "Задачи отсортированы по времени выполнения", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Tasks sorted by completion time", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -208,8 +208,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         taskViewModel.toggleTaskCompletion(task);
 
         String message = task.isCompleted() ?
-                "Задача \"" + task.getTitle() + "\" выполнена!" :
-                "Задача \"" + task.getTitle() + "\" помечена как невыполненная";
+                "Task \"" + task.getTitle() + "\" completed!" :
+                "Task \"" + task.getTitle() + "\" not completed";
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
@@ -219,10 +219,10 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         builder.setTitle(task.getTitle());
 
         String[] options = {
-                "Редактировать",
-                "Дублировать",
-                task.isCompleted() ? "Пометить как невыполненную" : "Выполнить",
-                "Удалить"
+                "Edit",
+                "Duplicate",
+                task.isCompleted() ? "Mark as not completed" : "Execute",
+                "Delete"
         };
 
         builder.setItems(options, (dialog, which) -> {
@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
     private void duplicateTask(Task task) {
         Task newTask = new Task();
-        newTask.setTitle(task.getTitle() + " (копия)");
+        newTask.setTitle(task.getTitle() + " (copy)");
         newTask.setDescription(task.getDescription());
         newTask.setCategory(task.getCategory());
         newTask.setNotificationEnabled(task.isNotificationEnabled());
@@ -256,20 +256,20 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         newTask.setCompletionTime(task.getCompletionTime() + (24 * 60 * 60 * 1000L));
 
         taskViewModel.insertTask(newTask);
-        Toast.makeText(this, "Задача дублирована", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Task duplicated", Toast.LENGTH_SHORT).show();
     }
 
     private void showDeleteConfirmation(Task task) {
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
-        builder.setTitle("Удалить задачу");
-        builder.setMessage("Вы уверены, что хотите удалить задачу \"" + task.getTitle() + "\"?");
+        builder.setTitle("Delete task");
+        builder.setMessage("Are you sure you want to delete the task? \"" + task.getTitle() + "\"?");
 
-        builder.setPositiveButton("Удалить", (dialog, which) -> {
+        builder.setPositiveButton("Delete", (dialog, which) -> {
             taskViewModel.deleteTask(task);
-            Toast.makeText(this, "Задача удалена", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Task deleted", Toast.LENGTH_SHORT).show();
         });
 
-        builder.setNegativeButton("Отмена", null);
+        builder.setNegativeButton("Cancellation", null);
         builder.show();
     }
 
@@ -286,9 +286,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     private void updateTitle(Integer count) {
         if (getSupportActionBar() != null) {
             if (count != null && count > 0) {
-                getSupportActionBar().setTitle("Мои задачи (" + count + ")");
+                getSupportActionBar().setTitle("My tasks (" + count + ")");
             } else {
-                getSupportActionBar().setTitle("Мои задачи");
+                getSupportActionBar().setTitle("My tasks");
             }
         }
     }
@@ -297,14 +297,14 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         NotificationHelper notificationHelper = new NotificationHelper(this);
         if (!notificationHelper.areNotificationsEnabled()) {
             androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
-            builder.setTitle("Разрешение на уведомления");
-            builder.setMessage("Для напоминаний о задачах рекомендуется включить уведомления в настройках приложения.");
-            builder.setPositiveButton("Настройки", (dialog, which) -> {
+            builder.setTitle("Permission for notifications");
+            builder.setMessage("For task reminders, it is recommended to enable notifications in the application settings.");
+            builder.setPositiveButton("Settings", (dialog, which) -> {
                 Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 intent.setData(android.net.Uri.parse("package:" + getPackageName()));
                 startActivity(intent);
             });
-            builder.setNegativeButton("Позже", null);
+            builder.setNegativeButton("Later", null);
             builder.show();
         }
     }
@@ -328,9 +328,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         if (resultCode == RESULT_OK) {
             String message = "";
             if (requestCode == REQUEST_ADD_TASK) {
-                message = "Задача создана";
+                message = "Task created";
             } else if (requestCode == REQUEST_EDIT_TASK) {
-                message = "Задача обновлена";
+                message = "Task updated";
             }
 
             if (!message.isEmpty()) {

@@ -22,7 +22,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Настройки");
+            getSupportActionBar().setTitle("Settings");
         }
 
         if (savedInstanceState == null) {
@@ -135,7 +135,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         private void showNotificationTimeDialog() {
-            String[] options = {"5 минут", "15 минут", "30 минут", "1 час", "2 часа", "1 день"};
+            String[] options = {"5 minutes", "15 minutes", "30 minutes", "1 hour", "2 hours", "1 day"};
             int[] values = {5, 15, 30, 60, 120, 24 * 60};
 
             int currentValue = settingsViewModel.getCurrentNotificationTimeMinutes();
@@ -149,18 +149,18 @@ public class SettingsActivity extends AppCompatActivity {
             }
 
             androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(requireContext());
-            builder.setTitle("Время уведомления");
+            builder.setTitle("Notification time");
             builder.setSingleChoiceItems(options, selectedIndex, (dialog, which) -> {
                 settingsViewModel.setNotificationTimeMinutes(values[which]);
                 updateNotificationTimeSummary();
                 dialog.dismiss();
             });
-            builder.setNegativeButton("Отмена", null);
+            builder.setNegativeButton("Cancel", null);
             builder.show();
         }
 
         private void showDefaultCategoryDialog() {
-            String[] categories = {"Общие", "Работа", "Личное", "Учеба", "Покупки", "Здоровье"};
+            String[] categories = {"General", "Work", "Personal", "Education", "Shopping", "Health"};
             String currentCategory = settingsViewModel.getCurrentDefaultCategory();
 
             int selectedIndex = 0;
@@ -172,18 +172,18 @@ public class SettingsActivity extends AppCompatActivity {
             }
 
             androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(requireContext());
-            builder.setTitle("Категория по умолчанию");
+            builder.setTitle("Default category");
             builder.setSingleChoiceItems(categories, selectedIndex, (dialog, which) -> {
                 settingsViewModel.setDefaultCategory(categories[which]);
                 updateDefaultCategorySummary();
                 dialog.dismiss();
             });
-            builder.setNegativeButton("Отмена", null);
+            builder.setNegativeButton("Cancel", null);
             builder.show();
         }
 
         private void showThemeDialog() {
-            String[] themes = {"Светлая", "Темная", "Системная"};
+            String[] themes = {"Light", "Dark", "system"};
             String[] values = {"light", "dark", "system"};
             String currentTheme = settingsViewModel.getCurrentThemeMode();
 
@@ -196,21 +196,21 @@ public class SettingsActivity extends AppCompatActivity {
             }
 
             androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(requireContext());
-            builder.setTitle("Тема приложения");
+            builder.setTitle("Application topic");
             builder.setSingleChoiceItems(themes, selectedIndex, (dialog, which) -> {
                 settingsViewModel.setThemeMode(values[which]);
                 updateThemeSummary();
                 dialog.dismiss();
             });
-            builder.setNegativeButton("Отмена", null);
+            builder.setNegativeButton("Cancel", null);
             builder.show();
         }
 
         private void showResetConfirmationDialog() {
             androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(requireContext());
-            builder.setTitle("Сброс настроек");
-            builder.setMessage("Вы уверены, что хотите сбросить все настройки к значениям по умолчанию?");
-            builder.setPositiveButton("Сбросить", (dialog, which) -> {
+            builder.setTitle("Reset settings");
+            builder.setMessage("Are you sure you want to reset all settings to their default values?");
+            builder.setPositiveButton("Reset", (dialog, which) -> {
                 settingsViewModel.resetToDefaults();
                 updateNotificationTimeSummary();
                 updateDefaultCategorySummary();
@@ -221,18 +221,18 @@ public class SettingsActivity extends AppCompatActivity {
                     hideCompletedPref.setChecked(false);
                 }
             });
-            builder.setNegativeButton("Отмена", null);
+            builder.setNegativeButton("Cancel", null);
             builder.show();
         }
 
         private void showAboutDialog() {
             androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(requireContext());
-            builder.setTitle("О приложении");
+            builder.setTitle("About the app");
             builder.setMessage(
                     "Todo App\n" +
-                            "Версия: 1.0.0\n\n" +
-                            "Приложение для управления задачами с уведомлениями, вложениями и категориями.\n\n" +
-                            "Разработано для Android"
+                            "Version: 1.0.0\n\n" +
+                            "An app for managing tasks with notifications, attachments, and categories.\n\n" +
+                            "Designed for Android"
             );
             builder.setPositiveButton("OK", null);
             builder.show();
@@ -240,25 +240,25 @@ public class SettingsActivity extends AppCompatActivity {
 
         private String getNotificationTimeText(int minutes) {
             if (minutes < 60) {
-                return minutes + " минут";
+                return minutes + " minutes";
             } else if (minutes < 24 * 60) {
                 int hours = minutes / 60;
-                return hours + (hours == 1 ? " час" : " часа");
+                return hours + (hours == 1 ? " hour" : " hours");
             } else {
                 int days = minutes / (24 * 60);
-                return days + (days == 1 ? " день" : " дня");
+                return days + (days == 1 ? " day" : " days");
             }
         }
 
         private String getThemeText(String theme) {
             switch (theme) {
                 case "light":
-                    return "Светлая";
+                    return "Light";
                 case "dark":
-                    return "Темная";
+                    return "Dark";
                 case "system":
                 default:
-                    return "Системная";
+                    return "System";
             }
         }
     }

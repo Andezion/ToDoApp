@@ -117,7 +117,7 @@ public class NotificationHelper {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification)
-                .setContentTitle("Напоминание: " + title)
+                .setContentTitle("Reminder: " + title)
                 .setContentText(getNotificationText(description, completionTime))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true)
@@ -128,7 +128,7 @@ public class NotificationHelper {
         if (description != null && description.length() > 50) {
             builder.setStyle(new NotificationCompat.BigTextStyle()
                     .bigText(description)
-                    .setSummaryText("До выполнения: " + DateUtils.getRelativeTimeString(completionTime)));
+                    .setSummaryText("Until completion: " + DateUtils.getRelativeTimeString(completionTime)));
         }
 
         addNotificationActions(builder, taskId);
@@ -153,7 +153,7 @@ public class NotificationHelper {
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
 
-        builder.addAction(R.drawable.ic_check, "Выполнено", completePendingIntent);
+        builder.addAction(R.drawable.ic_check, "Done", completePendingIntent);
 
         Intent snoozeIntent = new Intent(context, TaskNotificationReceiver.class);
         snoozeIntent.setAction("ACTION_SNOOZE_TASK");
@@ -166,7 +166,7 @@ public class NotificationHelper {
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
 
-        builder.addAction(R.drawable.ic_snooze, "Отложить", snoozePendingIntent);
+        builder.addAction(R.drawable.ic_snooze, "Postpone", snoozePendingIntent);
     }
 
     private String getNotificationText(String description, long completionTime) {
@@ -177,7 +177,7 @@ public class NotificationHelper {
                     description.substring(0, 100) + "... • " + timeText :
                     description + " • " + timeText;
         } else {
-            return "До выполнения: " + timeText;
+            return "Until completion: " + timeText;
         }
     }
 
@@ -196,15 +196,15 @@ public class NotificationHelper {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification)
-                .setContentTitle("Напоминания о задачах")
-                .setContentText("У вас " + activeNotificationsCount + " предстоящих задач")
+                .setContentTitle("Task reminders")
+                .setContentText("You have " + activeNotificationsCount + " upcoming tasks")
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .setGroup("todo_tasks")
                 .setGroupSummary(true)
                 .setAutoCancel(true)
                 .setContentIntent(contentPendingIntent);
 
-        notificationManager.notify(999999, builder.build()); // Специальный ID для сводки
+        notificationManager.notify(999999, builder.build());
     }
 
     public boolean areNotificationsEnabled() {
@@ -217,10 +217,7 @@ public class NotificationHelper {
     }
 
     public int getActiveNotificationsCount() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return notificationManager.getActiveNotifications().length;
-        }
-        return 0;
+        return notificationManager.getActiveNotifications().length;
     }
 
     public void rescheduleAllNotifications(java.util.List<Task> tasks) {

@@ -21,7 +21,7 @@ public class SettingsViewModel extends AndroidViewModel {
     public static final String PREF_SORT_ORDER = "sort_order";
 
     public static final int DEFAULT_NOTIFICATION_TIME = 15;
-    public static final String DEFAULT_CATEGORY = "Общие";
+    public static final String DEFAULT_CATEGORY = "General";
     public static final String DEFAULT_THEME = "system";
     public static final String DEFAULT_SORT_ORDER = "due_time";
 

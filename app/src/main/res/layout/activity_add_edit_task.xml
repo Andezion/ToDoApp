@@ -15,7 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="Новая задача" />
+            app:title="New task" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:hint="Название задачи"
+                android:hint="@string/task_name"
                 app:startIconDrawable="@drawable/ic_title">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -54,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:hint="Описание (необязательно)"
+                android:hint="@string/description_optional"
                 app:startIconDrawable="@drawable/ic_description">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -73,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:hint="Категория"
+                android:hint="@string/category"
                 app:startIconDrawable="@drawable/ic_category">
 
                 <AutoCompleteTextView
@@ -104,7 +104,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
                         android:drawablePadding="8dp"
-                        android:text="Дата и время выполнения"
+                        android:text="@string/date_and_time_of_completion"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
                         android:textColor="?attr/colorOnSurface"
                         app:drawableStartCompat="@drawable/ic_schedule" />
@@ -121,7 +121,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:layout_weight="1"
-                            android:text="Выбрать дату"
+                            android:text="@string/select_a_date"
                             app:icon="@drawable/ic_calendar" />
 
                         <com.google.android.material.button.MaterialButton
@@ -131,7 +131,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_weight="1"
-                            android:text="Выбрать время"
+                            android:text="@string/select_time"
                             app:icon="@drawable/ic_time" />
 
                     </LinearLayout>
@@ -172,7 +172,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Уведомления"
+                            android:text="@string/notifications"
                             android:textAppearance="?attr/textAppearanceBodyLarge"
                             android:textColor="?attr/colorOnSurface" />
 
@@ -196,35 +196,35 @@
                             style="@style/Widget.Material3.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="5 мин" />
+                            android:text="@string/_5_min" />
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/chip15min"
                             style="@style/Widget.Material3.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="15 мин" />
+                            android:text="@string/_15_min" />
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/chip30min"
                             style="@style/Widget.Material3.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="30 мин" />
+                            android:text="@string/_30_min" />
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/chip1hour"
                             style="@style/Widget.Material3.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1 час" />
+                            android:text="@string/_1_hr" />
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/chip1day"
                             style="@style/Widget.Material3.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1 день" />
+                            android:text="@string/_1_day" />
 
                     </com.google.android.material.chip.ChipGroup>
 
@@ -252,7 +252,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
                         android:drawablePadding="8dp"
-                        android:text="Вложения"
+                        android:text="@string/attachments"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
                         android:textColor="?attr/colorOnSurface"
                         app:drawableStartCompat="@drawable/ic_attachment" />
@@ -262,7 +262,7 @@
                         style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Добавить вложение"
+                        android:text="@string/add_attachment"
                         app:icon="@drawable/ic_add" />
 
                     <LinearLayout

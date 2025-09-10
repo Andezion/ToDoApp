@@ -3,86 +3,86 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
-        android:title="Отображение"
+        android:title="Display"
         app:iconSpaceReserved="false">
 
         <SwitchPreferenceCompat
             android:key="hide_completed_tasks"
-            android:title="Скрывать завершенные задачи"
-            android:summary="Не показывать выполненные задачи в списке"
+            android:title="Hide completed tasks"
+            android:summary="Do not show completed tasks in the list"
             android:defaultValue="false"
             app:iconSpaceReserved="false" />
 
         <Preference
             android:key="theme_mode"
-            android:title="Тема приложения"
-            android:summary="Системная"
+            android:title="Application topic"
+            android:summary="Systemic"
             app:iconSpaceReserved="false" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Уведомления"
+        android:title="Notifications"
         app:iconSpaceReserved="false">
 
         <Preference
             android:key="notification_time_minutes"
-            android:title="Время уведомления"
-            android:summary="15 минут"
+            android:title="Notification time"
+            android:summary="15 minutes"
             app:iconSpaceReserved="false" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Задачи"
+        android:title="Tasks"
         app:iconSpaceReserved="false">
 
         <Preference
             android:key="default_category"
-            android:title="Категория по умолчанию"
-            android:summary="Общие"
+            android:title="Default category"
+            android:summary="General"
             app:iconSpaceReserved="false" />
 
         <Preference
             android:key="sort_order"
-            android:title="Сортировка задач"
-            android:summary="По времени выполнения"
+            android:title="Task sorting"
+            android:summary="By completion time"
             app:iconSpaceReserved="false" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Данные"
+        android:title="Data"
         app:iconSpaceReserved="false">
 
         <Preference
             android:key="backup_restore"
-            android:title="Резервное копирование"
-            android:summary="Экспорт и импорт данных"
+            android:title="Backup"
+            android:summary="Data export and import"
             app:iconSpaceReserved="false" />
 
         <Preference
             android:key="reset_settings"
-            android:title="Сбросить настройки"
-            android:summary="Вернуть все настройки к значениям по умолчанию"
+            android:title="Reset settings"
+            android:summary="Reset all settings to default values"
             app:iconSpaceReserved="false" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Информация"
+        android:title="Information"
         app:iconSpaceReserved="false">
 
         <Preference
             android:key="about"
-            android:title="О приложении"
-            android:summary="Информация о версии и разработчике"
+            android:title="About the app"
+            android:summary="Version and developer information"
             app:iconSpaceReserved="false" />
 
         <Preference
             android:key="privacy_policy"
-            android:title="Политика конфиденциальности"
-            android:summary="Как мы обрабатываем ваши данные"
+            android:title="Privacy Policy"
+            android:summary="How we process your data"
             app:iconSpaceReserved="false" />
 
     </PreferenceCategory>

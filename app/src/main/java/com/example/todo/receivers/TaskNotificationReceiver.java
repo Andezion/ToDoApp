@@ -104,7 +104,7 @@ public class TaskNotificationReceiver extends BroadcastReceiver {
 
                 Handler mainHandler = new Handler(Looper.getMainLooper());
                 mainHandler.post(() -> {
-                    Toast.makeText(context, "Задача \"" + task.getTitle() + "\" выполнена!",
+                    Toast.makeText(context, "Task \"" + task.getTitle() + "\" completed!",
                             Toast.LENGTH_SHORT).show();
                 });
             }
@@ -128,7 +128,7 @@ public class TaskNotificationReceiver extends BroadcastReceiver {
 
                 Handler mainHandler = new Handler(Looper.getMainLooper());
                 mainHandler.post(() -> {
-                    Toast.makeText(context, "Задача отложена на 15 минут",
+                    Toast.makeText(context, "Task postponed for 15 minutes",
                             Toast.LENGTH_SHORT).show();
                 });
             }

@@ -51,8 +51,8 @@ public class AddEditTaskActivity extends AppCompatActivity {
     private int selectedNotificationMinutes = 15;
 
     private final String[] categories = {
-            "Общие", "Работа", "Личное", "Учеба",
-            "Покупки", "Здоровье", "Финансы", "Хобби", "Путешествия"
+            "General", "Work", "Personal", "Education",
+            "Shopping", "Health", "Finance", "Hobbies", "Travel"
     };
 
     @Override
@@ -115,7 +115,7 @@ public class AddEditTaskActivity extends AppCompatActivity {
     private void setupActionBar() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(isEditMode ? "Редактировать задачу" : "Новая задача");
+            getSupportActionBar().setTitle(isEditMode ? "Edit task" : "New task");
         }
     }
 
@@ -249,10 +249,10 @@ public class AddEditTaskActivity extends AppCompatActivity {
     }
 
     private void showAttachmentsDialog() {
-        String[] options = {"Камера", "Галерея", "Файлы", "Просмотр вложений"};
+        String[] options = {"Camera", "Gallery", "Files", "View attachments"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Вложения");
+        builder.setTitle("Attachments");
         builder.setItems(options, (dialog, which) -> {
             switch (which) {
                 case 0:
@@ -275,25 +275,25 @@ public class AddEditTaskActivity extends AppCompatActivity {
 
     private void openCamera() {
         // TODO: Реализовать открытие камеры
-        Toast.makeText(this, "Функция камеры будет добавлена позже", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "The camera feature will be added later", Toast.LENGTH_SHORT).show();
     }
 
     private void openGallery() {
         // TODO: Реализовать выбор из галереи
-        Toast.makeText(this, "Функция галереи будет добавлена позже", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "The gallery feature will be added later", Toast.LENGTH_SHORT).show();
     }
 
     private void openFilePicker() {
         // TODO: Реализовать выбор файлов
-        Toast.makeText(this, "Функция выбора файлов будет добавлена позже", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "The file selection feature will be added later", Toast.LENGTH_SHORT).show();
     }
 
     private void viewAttachments() {
         // TODO: Реализовать просмотр вложений
         if (isEditMode && currentTask != null) {
-            Toast.makeText(this, "Просмотр вложений будет добавлен позже", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Viewing attachments will be added later", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Сначала сохраните задачу", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "First, save the task", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -311,7 +311,7 @@ public class AddEditTaskActivity extends AppCompatActivity {
 
         String title = etTitle.getText().toString().trim();
         if (title.isEmpty()) {
-            tilTitle.setError("Введите название задачи");
+            tilTitle.setError("Enter the name of the task");
             isValid = false;
         } else {
             tilTitle.setError(null);
@@ -319,7 +319,7 @@ public class AddEditTaskActivity extends AppCompatActivity {
 
         String category = etCategory.getText().toString().trim();
         if (category.isEmpty()) {
-            tilCategory.setError("Выберите категорию");
+            tilCategory.setError("Select a category");
             isValid = false;
         } else {
             tilCategory.setError(null);
@@ -398,16 +398,16 @@ public class AddEditTaskActivity extends AppCompatActivity {
         if (!isEditMode || currentTask == null) return;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Удалить задачу");
-        builder.setMessage("Вы уверены, что хотите удалить эту задачу?");
+        builder.setTitle("Delete task");
+        builder.setMessage("Are you sure you want to delete this task?");
 
-        builder.setPositiveButton("Удалить", (dialog, which) -> {
+        builder.setPositiveButton("Delete", (dialog, which) -> {
             taskViewModel.deleteTask(currentTask);
             setResult(RESULT_OK);
             finish();
         });
 
-        builder.setNegativeButton("Отмена", null);
+        builder.setNegativeButton("Cancel", null);
         builder.show();
     }
 
@@ -415,12 +415,12 @@ public class AddEditTaskActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (hasUnsavedChanges()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Несохраненные изменения");
-            builder.setMessage("У вас есть несохраненные изменения. Сохранить задачу?");
+            builder.setTitle("Unsaved changes");
+            builder.setMessage("You have unsaved changes. Save the task?");
 
-            builder.setPositiveButton("Сохранить", (dialog, which) -> saveTask());
-            builder.setNegativeButton("Не сохранять", (dialog, which) -> super.onBackPressed());
-            builder.setNeutralButton("Отмена", null);
+            builder.setPositiveButton("Save", (dialog, which) -> saveTask());
+            builder.setNegativeButton("Don't save", (dialog, which) -> super.onBackPressed());
+            builder.setNeutralButton("Cancel", null);
 
             builder.show();
         } else {

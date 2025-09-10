@@ -97,7 +97,7 @@
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textColor="?attr/colorOnSurfaceVariant"
                 android:visibility="gone"
-                tools:text="Описание задачи может быть достаточно длинным"
+                tools:text="The task description may be quite long"
                 tools:visibility="visible" />
 
 
@@ -119,7 +119,7 @@
                     android:textColor="?attr/colorOnSurfaceVariant"
                     app:drawableStartCompat="@drawable/ic_calendar"
                     app:drawableTint="?attr/colorOnSurfaceVariant"
-                    tools:text="Сегодня, 15:30" />
+                    tools:text="Today, 15:30" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/tvCategory"
@@ -128,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:textAppearance="?attr/textAppearanceBodySmall"
-                    tools:text="Работа" />
+                    tools:text="Work" />
 
             </LinearLayout>
 

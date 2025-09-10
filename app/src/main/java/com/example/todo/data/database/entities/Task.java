@@ -26,7 +26,7 @@ public class Task
         this.notificationEnabled = true;
         this.hasAttachments = false;
         this.notificationMinutesBefore = 15;
-        this.category = "Общие";
+        this.category = "General";
     }
 
     public int getId()

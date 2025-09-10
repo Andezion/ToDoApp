@@ -51,17 +51,17 @@ public class DateUtils {
         Calendar todayCal = Calendar.getInstance();
 
         if (isSameDay(taskCal, todayCal)) {
-            return "Сегодня, " + formatTime(timestamp);
+            return "Today, " + formatTime(timestamp);
         }
 
         todayCal.add(Calendar.DAY_OF_MONTH, 1);
         if (isSameDay(taskCal, todayCal)) {
-            return "Завтра, " + formatTime(timestamp);
+            return "Tomorrow, " + formatTime(timestamp);
         }
 
         todayCal.add(Calendar.DAY_OF_MONTH, -2);
         if (isSameDay(taskCal, todayCal)) {
-            return "Вчера, " + formatTime(timestamp);
+            return "Yesterday, " + formatTime(timestamp);
         }
         todayCal.setTimeInMillis(System.currentTimeMillis());
         long diffInMillis = Math.abs(timestamp - todayCal.getTimeInMillis());
@@ -159,7 +159,7 @@ public class DateUtils {
         long diffInMillis = completionTime - currentTime;
 
         if (diffInMillis < 0) {
-            return "Просрочено";
+            return "Overdue";
         }
 
         long diffInMinutes = diffInMillis / (60 * 1000L);
@@ -167,13 +167,13 @@ public class DateUtils {
         long diffInDays = diffInHours / 24;
 
         if (diffInDays > 0) {
-            return diffInDays == 1 ? "Через 1 день" : "Через " + diffInDays + " дней";
+            return diffInDays == 1 ? "In 1 day" : "In " + diffInDays + " days";
         } else if (diffInHours > 0) {
-            return diffInHours == 1 ? "Через 1 час" : "Через " + diffInHours + " часов";
+            return diffInHours == 1 ? "In 1 hour" : "In " + diffInHours + " hours";
         } else if (diffInMinutes > 0) {
-            return diffInMinutes == 1 ? "Через 1 минуту" : "Через " + diffInMinutes + " минут";
+            return diffInMinutes == 1 ? "In 1 minute" : "In " + diffInMinutes + " minutes";
         } else {
-            return "Сейчас";
+            return "Now";
         }
     }
 
