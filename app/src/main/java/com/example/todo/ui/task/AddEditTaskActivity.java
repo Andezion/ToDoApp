@@ -361,12 +361,10 @@ public class AddEditTaskActivity extends AppCompatActivity {
 
             if (FileUtils.isImageFile(fileName)) {
                 copiedFile = FileUtils.compressImageIfNeeded(copiedFile);
-                fileSize = copiedFile.length(); // Обновляем размер после сжатия
+                fileSize = copiedFile.length();
             }
 
-            // Сохраняем информацию о файле
             if (isEditMode && currentTask != null) {
-                // Для редактируемой задачи создаем attachment сразу
                 Attachment attachment = new Attachment();
                 attachment.setTaskId(currentTask.getId());
                 attachment.setFileName(fileName);
@@ -376,10 +374,8 @@ public class AddEditTaskActivity extends AppCompatActivity {
 
                 currentAttachments.add(attachment);
 
-                // Сохраняем в базу сразу
                 taskViewModel.insertAttachment(attachment);
             } else {
-                // Для новой задачи сохраняем временно
                 String attachmentData = copiedFile.getAbsolutePath() + "|" + fileName + "|" + fileSize + "|" + fileType;
                 temporaryAttachments.add(attachmentData);
             }
@@ -422,7 +418,6 @@ public class AddEditTaskActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Вложения (" + attachments.size() + ")");
         builder.setItems(fileNames, (dialog, which) -> {
-            // Можно добавить действия при клике на вложение (открыть, удалить и т.д.)
             Attachment selectedAttachment = attachments.get(which);
             Toast.makeText(this, "Файл: " + selectedAttachment.getFileName(), Toast.LENGTH_SHORT).show();
         });
@@ -435,7 +430,7 @@ public class AddEditTaskActivity extends AppCompatActivity {
         for (int i = 0; i < temporaryAttachments.size(); i++) {
             String[] parts = temporaryAttachments.get(i).split("\\|");
             if (parts.length >= 2) {
-                fileNames[i] = parts[1]; // Имя файла
+                fileNames[i] = parts[1];
             } else {
                 fileNames[i] = "Неизвестный файл";
             }
@@ -519,8 +514,6 @@ public class AddEditTaskActivity extends AppCompatActivity {
 
             taskViewModel.updateTask(currentTask);
 
-            // Новые вложения уже были сохранены в handleSelectedFile
-
         } else {
             Task newTask = new Task();
             newTask.setTitle(title);
@@ -530,7 +523,6 @@ public class AddEditTaskActivity extends AppCompatActivity {
             newTask.setNotificationEnabled(notificationEnabled);
             newTask.setNotificationMinutesBefore(selectedNotificationMinutes);
 
-            // Вставляем задачу вместе с вложениями
             taskViewModel.insertTaskWithAttachments(newTask, temporaryAttachments);
         }
 

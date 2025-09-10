@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     }
 
     private void setupRecyclerView() {
-        taskAdapter = new TaskAdapter(this, taskViewModel); // Передаем taskViewModel
+        taskAdapter = new TaskAdapter(this, taskViewModel);
         recyclerViewTasks.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewTasks.setAdapter(taskAdapter);
 
@@ -140,7 +140,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                 return;
             }
 
-            // Используйте FileProvider для безопасного доступа к файлу
             android.net.Uri fileUri = androidx.core.content.FileProvider.getUriForFile(
                     this,
                     getPackageName() + ".fileprovider",

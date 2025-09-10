@@ -141,10 +141,9 @@
             android:layout_marginStart="8dp"
             android:src="@drawable/ic_attachment"
             android:visibility="gone"
-            android:contentDescription="Has attachments"
+            android:contentDescription="@string/has_attachments"
             app:tint="?attr/colorOnSurfaceVariant" />
 
-        <!-- Или можно использовать TextView с количеством вложений -->
         <TextView
             android:id="@+id/tvAttachmentCount"
             android:layout_width="wrap_content"

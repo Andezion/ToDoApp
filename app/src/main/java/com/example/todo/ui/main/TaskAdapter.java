@@ -22,9 +22,8 @@ import com.example.todo.viewmodel.TaskViewModel;
 public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
 
     private final OnTaskClickListener listener;
-    private final TaskViewModel taskViewModel; // Добавляем TaskViewModel
+    private final TaskViewModel taskViewModel;
 
-    // Обновленный конструктор
     public TaskAdapter(OnTaskClickListener listener, TaskViewModel taskViewModel) {
         super(DIFF_CALLBACK);
         this.listener = listener;
@@ -74,7 +73,6 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
         private final ImageView ivPriority;
         private final View vCategoryIndicator;
 
-        // Добавляем новые элементы для индикатора вложений
         private final ImageView ivAttachmentIndicator;
         private final TextView tvAttachmentCount;
 
@@ -91,7 +89,6 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
             ivPriority = itemView.findViewById(R.id.ivPriority);
             vCategoryIndicator = itemView.findViewById(R.id.vCategoryIndicator);
 
-            // Инициализируем новые элементы
             ivAttachmentIndicator = itemView.findViewById(R.id.ivAttachmentIndicator);
             tvAttachmentCount = itemView.findViewById(R.id.tvAttachmentCount);
 
@@ -118,7 +115,6 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
                 }
             });
 
-            // Добавляем обработчики кликов для индикатора вложений
             ivAttachmentIndicator.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
@@ -188,23 +184,18 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
                 ivPriority.setVisibility(View.GONE);
             }
 
-            // НОВЫЙ КОД: Обработка индикатора количества вложений
             loadAttachmentCount(task);
         }
 
-        // Новый метод для загрузки количества вложений
         private void loadAttachmentCount(Task task) {
             if (taskViewModel != null) {
                 taskViewModel.getAttachmentCountForTask(task.getId()).observeForever(count -> {
                     if (count != null && count > 0) {
-                        // Показываем индикатор с количеством
                         tvAttachmentCount.setVisibility(View.VISIBLE);
                         tvAttachmentCount.setText(String.valueOf(count));
 
-                        // Скрываем старый индикатор
                         ivAttachmentIndicator.setVisibility(View.GONE);
                     } else {
-                        // Скрываем оба индикатора если нет вложений
                         tvAttachmentCount.setVisibility(View.GONE);
                         ivAttachmentIndicator.setVisibility(View.GONE);
                     }
@@ -219,10 +210,10 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
                 case "work":
                     color = ContextCompat.getColor(itemView.getContext(), R.color.category_work);
                     break;
-                case "personal":  // Изменил с "private" на "personal"
+                case "personal":
                     color = ContextCompat.getColor(itemView.getContext(), R.color.category_personal);
                     break;
-                case "education": // Изменил с "studies" на "education"
+                case "education":
                     color = ContextCompat.getColor(itemView.getContext(), R.color.category_study);
                     break;
                 case "shopping":
@@ -240,11 +231,10 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
         }
     }
 
-    // Обновленный интерфейс с новым методом
     public interface OnTaskClickListener {
         void onTaskClick(Task task);
         void onTaskLongClick(Task task);
         void onTaskCheckboxClick(Task task);
-        void onAttachmentClick(Task task); // Новый метод
+        void onAttachmentClick(Task task);
     }
 }
