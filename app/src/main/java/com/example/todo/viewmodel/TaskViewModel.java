@@ -2,8 +2,10 @@ package com.example.todo.viewmodel;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
@@ -31,6 +33,8 @@ public class TaskViewModel extends AndroidViewModel {
     private final LiveData<List<String>> allCategories;
     private final LiveData<Integer> incompleteTaskCount;
 
+    private final MediatorLiveData<List<Task>> combinedTasks = new MediatorLiveData<>();
+
     public TaskViewModel(@NonNull Application application) {
         super(application);
         repository = new TaskRepository(application);
@@ -54,8 +58,10 @@ public class TaskViewModel extends AndroidViewModel {
                         repository.getFilteredTasks(showCompleted, category)
                 )
         );
-    }
 
+        showCompletedTasks.setValue(true);
+        selectedCategory.setValue(null);
+    }
 
     public LiveData<List<Task>> getAllTasks() {
         return allTasks;
@@ -119,6 +125,30 @@ public class TaskViewModel extends AndroidViewModel {
 
     public void setSelectedCategory(String category) {
         selectedCategory.setValue(category);
+    }
+
+    public LiveData<List<Attachment>> getAttachmentsByTaskId(int taskId) {
+        return repository.getAttachmentsForTask(taskId);
+    }
+
+    public void insertTaskWithAttachments(Task task, List<String> attachmentPaths) {
+        repository.insert(task, insertedTask -> {
+            if (insertedTask != null && attachmentPaths != null && !attachmentPaths.isEmpty()) {
+                for (String attachmentData : attachmentPaths) {
+                    String[] parts = attachmentData.split("\\|");
+                    if (parts.length >= 4) {
+                        Attachment attachment = new Attachment();
+                        attachment.setTaskId(insertedTask.getId());
+                        attachment.setFilePath(parts[0]);
+                        attachment.setFileName(parts[1]);
+                        attachment.setFileSize(Long.parseLong(parts[2]));
+                        attachment.setFileType(parts[3]);
+
+                        insertAttachment(attachment);
+                    }
+                }
+            }
+        });
     }
 
     public void setShowCompletedTasks(boolean showCompleted) {

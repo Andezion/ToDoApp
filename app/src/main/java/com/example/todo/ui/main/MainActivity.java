@@ -1,5 +1,6 @@
 package com.example.todo.ui.main;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -48,6 +49,10 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         setupFab();
         observeData();
 
+        taskViewModel.getIncompleteTaskCount().observe(this, count -> {
+            updateTitle(count);
+        });
+
         checkNotificationPermissions();
 
         handleNotificationIntent(getIntent());
@@ -72,15 +77,103 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
     private void initViewModel() {
         taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
+
+        android.util.Log.d("MainActivity", "showCompletedTasks: " + taskViewModel.getCurrentShowCompletedTasks());
+        android.util.Log.d("MainActivity", "selectedCategory: " + taskViewModel.getCurrentSelectedCategory());
+        android.util.Log.d("MainActivity", "searchQuery: " + taskViewModel.getCurrentSearchQuery());
     }
 
     private void setupRecyclerView() {
-        taskAdapter = new TaskAdapter(this);
+        taskAdapter = new TaskAdapter(this, taskViewModel); // Передаем taskViewModel
         recyclerViewTasks.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewTasks.setAdapter(taskAdapter);
 
         recyclerViewTasks.setItemAnimator(new androidx.recyclerview.widget.DefaultItemAnimator());
     }
+
+    @Override
+    public void onAttachmentClick(Task task) {
+        viewTaskAttachments(task);
+    }
+
+    private void viewTaskAttachments(Task task) {
+        taskViewModel.getAttachmentsForTask(task.getId()).observe(this, attachments -> {
+            if (attachments != null && !attachments.isEmpty()) {
+                showAttachmentsList(task, attachments);
+            } else {
+                Toast.makeText(this, "No attachments for this task", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void showAttachmentsList(Task task, java.util.List<com.example.todo.data.database.entities.Attachment> attachments) {
+        String[] fileNames = new String[attachments.size()];
+        for (int i = 0; i < attachments.size(); i++) {
+            com.example.todo.data.database.entities.Attachment attachment = attachments.get(i);
+            fileNames[i] = attachment.getFileName() + " (" + formatFileSize(attachment.getFileSize()) + ")";
+        }
+
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setTitle("Attachments: " + task.getTitle());
+        builder.setItems(fileNames, (dialog, which) -> {
+            com.example.todo.data.database.entities.Attachment selectedAttachment = attachments.get(which);
+            openAttachment(selectedAttachment);
+        });
+        builder.setNegativeButton("Close", null);
+        builder.show();
+    }
+
+    @SuppressLint("DefaultLocale")
+    private String formatFileSize(long bytes) {
+        if (bytes < 1024) return bytes + " B";
+        if (bytes < 1024 * 1024) return String.format("%.1f KB", bytes / 1024.0);
+        return String.format("%.1f MB", bytes / (1024.0 * 1024.0));
+    }
+
+    private void openAttachment(com.example.todo.data.database.entities.Attachment attachment) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            java.io.File file = new java.io.File(attachment.getFilePath());
+
+            if (!file.exists()) {
+                Toast.makeText(this, "File not found: " + attachment.getFileName(), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Используйте FileProvider для безопасного доступа к файлу
+            android.net.Uri fileUri = androidx.core.content.FileProvider.getUriForFile(
+                    this,
+                    getPackageName() + ".fileprovider",
+                    file
+            );
+
+            intent.setDataAndType(fileUri, getMimeType(attachment.getFileName()));
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "No app found to open this file", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Error opening file: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String getMimeType(String fileName) {
+        String extension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+        switch (extension) {
+            case "pdf": return "application/pdf";
+            case "doc": case "docx": return "application/msword";
+            case "txt": return "text/plain";
+            case "jpg": case "jpeg": return "image/jpeg";
+            case "png": return "image/png";
+            case "mp4": return "video/mp4";
+            case "mp3": return "audio/mpeg";
+            default: return "*/*";
+        }
+    }
+
 
     private void setupFab() {
         fabAddTask.setOnClickListener(v -> {
@@ -91,20 +184,33 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
 
     private void observeData() {
-        if (currentSearchQuery.isEmpty()) {
-            taskViewModel.getFilteredTasks().observe(this, tasks -> {
-                taskAdapter.submitList(tasks);
-                updateEmptyState(tasks == null || tasks.isEmpty());
-            });
-        } else {
-            taskViewModel.getSearchResults().observe(this, tasks -> {
-                taskAdapter.submitList(tasks);
-                updateEmptyState(tasks == null || tasks.isEmpty());
-            });
-        }
+        android.util.Log.d("MainActivity", "=== observeData() called ===");
 
-        taskViewModel.getIncompleteTaskCount().observe(this, count -> {
-            updateTitle(count);
+        taskViewModel.getAllTasks().observe(this, tasks -> {
+            android.util.Log.d("MainActivity", "AllTasks received: " + (tasks != null ? tasks.size() : "null"));
+            if (tasks != null) {
+                for (int i = 0; i < tasks.size(); i++) {
+                    android.util.Log.d("MainActivity", "Task " + i + ": " + tasks.get(i).getTitle());
+                }
+            }
+        });
+
+        taskViewModel.getFilteredTasks().observe(this, tasks -> {
+            android.util.Log.d("MainActivity", "FilteredTasks received: " + (tasks != null ? tasks.size() : "null"));
+            if (currentSearchQuery.isEmpty()) {
+                android.util.Log.d("MainActivity", "Updating adapter with FilteredTasks");
+                taskAdapter.submitList(tasks);
+                updateEmptyState(tasks == null || tasks.isEmpty());
+            }
+        });
+
+        taskViewModel.getSearchResults().observe(this, tasks -> {
+            android.util.Log.d("MainActivity", "SearchResults received: " + (tasks != null ? tasks.size() : "null"));
+            if (!currentSearchQuery.isEmpty()) {
+                android.util.Log.d("MainActivity", "Updating adapter with SearchResults");
+                taskAdapter.submitList(tasks);
+                updateEmptyState(tasks == null || tasks.isEmpty());
+            }
         });
     }
 
@@ -173,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         taskViewModel.setSearchQuery(currentSearchQuery);
 
 
-        observeData();
+        //observeData();
     }
 
     private void showFilterDialog() {
@@ -324,6 +430,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        android.util.Log.d("MainActivity", "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
 
         if (resultCode == RESULT_OK) {
             String message = "";

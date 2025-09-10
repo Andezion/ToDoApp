@@ -134,6 +134,31 @@
 
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/ivAttachmentIndicator"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_attachment"
+            android:visibility="gone"
+            android:contentDescription="Has attachments"
+            app:tint="?attr/colorOnSurfaceVariant" />
+
+        <!-- Или можно использовать TextView с количеством вложений -->
+        <TextView
+            android:id="@+id/tvAttachmentCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_attachment_count"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="2dp"
+            android:text="3"
+            android:textSize="12sp"
+            android:textColor="?attr/colorOnSecondaryContainer"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
         <CheckBox
             android:id="@+id/cbCompleted"
             android:layout_width="wrap_content"

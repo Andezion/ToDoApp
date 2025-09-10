@@ -30,6 +30,15 @@ import com.example.todo.viewmodel.SettingsViewModel;
 import java.util.Calendar;
 import java.util.Objects;
 
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.OpenableColumns;
+import com.example.todo.utils.FileUtils;
+import com.example.todo.data.database.entities.Attachment;
+import java.io.File;
+import java.util.List;
+import java.util.ArrayList;
+
 public class AddEditTaskActivity extends AppCompatActivity {
 
     public static final String EXTRA_TASK_ID = "task_id";
@@ -49,6 +58,9 @@ public class AddEditTaskActivity extends AppCompatActivity {
     private boolean isEditMode = false;
     private Calendar selectedDateTime;
     private int selectedNotificationMinutes = 15;
+
+    private List<String> temporaryAttachments = new ArrayList<>();
+    private List<Attachment> currentAttachments = new ArrayList<>();
 
     private final String[] categories = {
             "General", "Work", "Personal", "Education",
@@ -92,6 +104,9 @@ public class AddEditTaskActivity extends AppCompatActivity {
         TextInputLayout tilDescription = findViewById(R.id.tilDescription);
         tilCategory = findViewById(R.id.tilCategory);
 
+        temporaryAttachments = new ArrayList<>();
+        currentAttachments = new ArrayList<>();
+
         btnSetDate.setOnClickListener(v -> showDatePicker());
         btnSetTime.setOnClickListener(v -> showTimePicker());
         btnAttachments.setOnClickListener(v -> showAttachmentsDialog());
@@ -123,6 +138,19 @@ public class AddEditTaskActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, categories);
         etCategory.setAdapter(adapter);
+
+        etCategory.setThreshold(0);
+
+        etCategory.setOnClickListener(v -> {
+            etCategory.showDropDown();
+        });
+
+        etCategory.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                etCategory.showDropDown();
+            }
+        });
+
         etCategory.setOnItemClickListener((parent, view, position, id) -> {
             etCategory.clearFocus();
         });
@@ -187,6 +215,13 @@ public class AddEditTaskActivity extends AppCompatActivity {
 
         chipGroupNotificationTime.setVisibility(
                 currentTask.isNotificationEnabled() ? View.VISIBLE : View.GONE);
+
+        taskViewModel.getAttachmentsByTaskId(currentTask.getId()).observe(this, attachments -> {
+            if (attachments != null) {
+                currentAttachments.clear();
+                currentAttachments.addAll(attachments);
+            }
+        });
     }
 
     private void selectNotificationChip() {
@@ -283,17 +318,153 @@ public class AddEditTaskActivity extends AppCompatActivity {
         Toast.makeText(this, "The gallery feature will be added later", Toast.LENGTH_SHORT).show();
     }
 
+
+
     private void openFilePicker() {
-        // TODO: Реализовать выбор файлов
-        Toast.makeText(this, "The file selection feature will be added later", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        try {
+            startActivityForResult(Intent.createChooser(intent, "Выберите файл"), 2001);
+        } catch (Exception e) {
+            Toast.makeText(this, "Не удалось открыть файловый менеджер", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 2001 && resultCode == RESULT_OK && data != null) {
+            Uri fileUri = data.getData();
+            if (fileUri != null) {
+                handleSelectedFile(fileUri);
+            }
+        }
+    }
+
+    private void handleSelectedFile(Uri fileUri) {
+        try {
+            String fileName = getFileNameFromUri(fileUri);
+            String uniqueFileName = FileUtils.generateUniqueFileName(fileName);
+            File copiedFile = FileUtils.copyFileToAppDirectory(this, fileUri, uniqueFileName);
+
+            long fileSize = copiedFile.length();
+            String fileType = FileUtils.getFileType(fileName);
+
+            if (!FileUtils.isFileSizeValid(fileSize, fileType)) {
+                copiedFile.delete();
+                Toast.makeText(this, "Файл слишком большой", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (FileUtils.isImageFile(fileName)) {
+                copiedFile = FileUtils.compressImageIfNeeded(copiedFile);
+                fileSize = copiedFile.length(); // Обновляем размер после сжатия
+            }
+
+            // Сохраняем информацию о файле
+            if (isEditMode && currentTask != null) {
+                // Для редактируемой задачи создаем attachment сразу
+                Attachment attachment = new Attachment();
+                attachment.setTaskId(currentTask.getId());
+                attachment.setFileName(fileName);
+                attachment.setFilePath(copiedFile.getAbsolutePath());
+                attachment.setFileSize(fileSize);
+                attachment.setFileType(fileType);
+
+                currentAttachments.add(attachment);
+
+                // Сохраняем в базу сразу
+                taskViewModel.insertAttachment(attachment);
+            } else {
+                // Для новой задачи сохраняем временно
+                String attachmentData = copiedFile.getAbsolutePath() + "|" + fileName + "|" + fileSize + "|" + fileType;
+                temporaryAttachments.add(attachmentData);
+            }
+
+            Toast.makeText(this, "Файл прикреплен: " + fileName, Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            Toast.makeText(this, "Ошибка при прикреплении файла: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String getFileNameFromUri(Uri uri) {
+        String fileName = "unknown_file";
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            if (cursor != null) {
+                try {
+                    if (cursor.moveToFirst()) {
+                        int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                        if (nameIndex >= 0) {
+                            fileName = cursor.getString(nameIndex);
+                        }
+                    }
+                } finally {
+                    cursor.close();
+                }
+            }
+        } else {
+            fileName = uri.getLastPathSegment();
+        }
+        return fileName != null ? fileName : "unknown_file";
+    }
+
+    private void showAttachmentsList(List<Attachment> attachments) {
+        String[] fileNames = new String[attachments.size()];
+        for (int i = 0; i < attachments.size(); i++) {
+            fileNames[i] = attachments.get(i).getFileName();
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Вложения (" + attachments.size() + ")");
+        builder.setItems(fileNames, (dialog, which) -> {
+            // Можно добавить действия при клике на вложение (открыть, удалить и т.д.)
+            Attachment selectedAttachment = attachments.get(which);
+            Toast.makeText(this, "Файл: " + selectedAttachment.getFileName(), Toast.LENGTH_SHORT).show();
+        });
+        builder.setPositiveButton("Закрыть", null);
+        builder.show();
+    }
+
+    private void showTemporaryAttachmentsList() {
+        String[] fileNames = new String[temporaryAttachments.size()];
+        for (int i = 0; i < temporaryAttachments.size(); i++) {
+            String[] parts = temporaryAttachments.get(i).split("\\|");
+            if (parts.length >= 2) {
+                fileNames[i] = parts[1]; // Имя файла
+            } else {
+                fileNames[i] = "Неизвестный файл";
+            }
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Временные вложения (" + temporaryAttachments.size() + ")");
+        builder.setItems(fileNames, (dialog, which) -> {
+            Toast.makeText(this, "Файл: " + fileNames[which], Toast.LENGTH_SHORT).show();
+        });
+        builder.setPositiveButton("Закрыть", null);
+        builder.show();
     }
 
     private void viewAttachments() {
-        // TODO: Реализовать просмотр вложений
         if (isEditMode && currentTask != null) {
-            Toast.makeText(this, "Viewing attachments will be added later", Toast.LENGTH_SHORT).show();
+            taskViewModel.getAttachmentsForTask(currentTask.getId()).observe(this, attachments -> {
+                if (attachments != null && !attachments.isEmpty()) {
+                    showAttachmentsList(attachments);
+                } else {
+                    Toast.makeText(this, "Нет вложений", Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
-            Toast.makeText(this, "First, save the task", Toast.LENGTH_SHORT).show();
+            if (!temporaryAttachments.isEmpty()) {
+                showTemporaryAttachmentsList();
+            } else {
+                Toast.makeText(this, "Нет вложений", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -347,6 +518,9 @@ public class AddEditTaskActivity extends AppCompatActivity {
             currentTask.setNotificationMinutesBefore(selectedNotificationMinutes);
 
             taskViewModel.updateTask(currentTask);
+
+            // Новые вложения уже были сохранены в handleSelectedFile
+
         } else {
             Task newTask = new Task();
             newTask.setTitle(title);
@@ -356,7 +530,8 @@ public class AddEditTaskActivity extends AppCompatActivity {
             newTask.setNotificationEnabled(notificationEnabled);
             newTask.setNotificationMinutesBefore(selectedNotificationMinutes);
 
-            taskViewModel.insertTask(newTask);
+            // Вставляем задачу вместе с вложениями
+            taskViewModel.insertTaskWithAttachments(newTask, temporaryAttachments);
         }
 
         setResult(RESULT_OK);
@@ -429,8 +604,8 @@ public class AddEditTaskActivity extends AppCompatActivity {
     }
 
     private boolean hasUnsavedChanges() {
-        String currentTitle = etTitle.getText().toString().trim();
-        String currentDescription = etDescription.getText().toString().trim();
+        String currentTitle = Objects.requireNonNull(etTitle.getText()).toString().trim();
+        String currentDescription = Objects.requireNonNull(etDescription.getText()).toString().trim();
         String currentCategory = etCategory.getText().toString().trim();
 
         if (isEditMode && currentTask != null) {
